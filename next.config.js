@@ -4,6 +4,12 @@ const { i18n } = require('./next-i18next.config');
 const config = {
   i18n,
 
+  experimental: {
+    appDir: true,
+  },
+
+  output: "standalone",
+
   async redirects() {
     return [
       {

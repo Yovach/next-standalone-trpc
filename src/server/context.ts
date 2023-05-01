@@ -1,8 +1,6 @@
 import type { inferAsyncReturnType } from '@trpc/server';
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { i18n } from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { prisma } from './prisma';
 
 /**
  * Defines your inner context shape.
@@ -25,8 +23,6 @@ export interface CreateInnerContextOptions
  */
 export async function createInnerTRPCContext(opts?: CreateInnerContextOptions) {
   return {
-    prisma,
-    task: prisma.task,
     ...opts,
   };
 }

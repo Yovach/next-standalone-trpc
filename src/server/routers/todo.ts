@@ -3,11 +3,10 @@ import { baseProcedure, router } from '../trpc';
 
 export const todoRouter = router({
   all: baseProcedure.query(({ ctx }) => {
-    return ctx.task.findMany({
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
+    return [
+      {id: '1', text: 'test', completed: false},
+      {id: '2', text: 'test2', completed: true},
+    ];
   }),
   add: baseProcedure
     .input(
@@ -17,10 +16,7 @@ export const todoRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const todo = await ctx.task.create({
-        data: input,
-      });
-      return todo;
+      return [];
     }),
   edit: baseProcedure
     .input(
@@ -34,28 +30,6 @@ export const todoRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const { id, data } = input;
-      const todo = await ctx.task.update({
-        where: { id },
-        data,
-      });
-      return todo;
+      return {};
     }),
-  toggleAll: baseProcedure
-    .input(z.object({ completed: z.boolean() }))
-    .mutation(async ({ ctx, input }) => {
-      await ctx.task.updateMany({
-        data: { completed: input.completed },
-      });
-    }),
-  delete: baseProcedure
-    .input(z.string().uuid())
-    .mutation(async ({ ctx, input: id }) => {
-      await ctx.task.delete({ where: { id } });
-      return id;
-    }),
-  clearCompleted: baseProcedure.mutation(async ({ ctx }) => {
-    await ctx.task.deleteMany({ where: { completed: true } });
-
-    return ctx.task.findMany();
-  }),
 });
